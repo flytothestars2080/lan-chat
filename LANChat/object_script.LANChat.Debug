@@ -1,0 +1,12 @@
+INPUT(
+./debug\main.o
+./debug\ChatWidget.o
+./debug\qdialoglogin.o
+./debug\tcpsendfiledialog.o
+./debug\receivefiledialog.o
+./debug\qrc_res.o
+./debug\moc_ChatWidget.o
+./debug\moc_qdialoglogin.o
+./debug\moc_tcpsendfiledialog.o
+./debug\moc_receivefiledialog.o
+);
