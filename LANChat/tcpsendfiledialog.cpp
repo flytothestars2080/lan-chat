@@ -17,8 +17,11 @@ void TcpSendFileDialog::setPayloadSize(const qint64 &value)
 void TcpSendFileDialog::ClientRefuse()
 {
 
-    ui->label->setText("客户端拒绝接收");
+    ui->label->setText("对端拒绝接收");
     tcpServer->close();
+    ui->btn_FileOpen->setEnabled(true);
+    ui->btn_send->setEnabled(false);
+
 }
 
 void TcpSendFileDialog::closeEvent(QCloseEvent *event)
@@ -167,6 +170,9 @@ void TcpSendFileDialog::on_btn_send_clicked()
         return ;
     }
     ui->label->setText("等待接收");
+    ui->btn_FileOpen->setEnabled(false);
+    ui->btn_send->setEnabled(false);
+
     emit sendFileName(FileName);
 }
 

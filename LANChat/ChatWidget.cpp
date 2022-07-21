@@ -93,9 +93,16 @@ void ChatWidget::hasPendingFile(QString username, QString sendIP, QString recyIP
         {
 
             QString filepath=QFileDialog::getExistingDirectory(this);
+            if(filepath.isEmpty())
+            {
+                QMessageBox::warning(this,"警告","目录为空");
+                sendMessage(RefuseFile,sendIP);
+                return ;
+            }
             receiveFileDialog* recydlg=new receiveFileDialog(this);
             recydlg->setFileName(Filename);
             recydlg->SetFilePath(filepath);
+
             recydlg->SetAddress(QHostAddress(sendIP));//设置连接地址
             recydlg->show();
             recydlg->StartConnect();
@@ -340,7 +347,9 @@ void ChatWidget::sendMessage(ChatWidget::MessageType messageType,QString IP)
 
     }
     //写入socket的输出缓冲区
-    udpsocket->writeDatagram(data,data.length(),QHostAddress::Broadcast,m_port);
+   qint64 r= udpsocket->writeDatagram(data,data.length(),QHostAddress::Broadcast,m_port);
+   qDebug()<<r<<endl;
+   udpsocket->waitForReadyRead(100);
 }
 
 
@@ -425,11 +434,11 @@ void ChatWidget::SocketReadyRead_slot()
 
             break;
         case ChatWidget::RefuseFile:
-             in>>Ip;
-             if(Ip==m_LocalIp)
-             {
-                 TcpsendDlg->ClientRefuse();
-             }
+            in>>Ip;//文件发送IP
+            if(Ip==m_LocalIp)
+            {
+                TcpsendDlg->ClientRefuse();
+            }
 
             break;
 
@@ -561,5 +570,5 @@ void ChatWidget::on_messageTextEdit_currentCharFormatChanged(const QTextCharForm
 
 void ChatWidget::on_clearToolBtn_clicked()
 {
-    ui->messageTextEdit->clear();
+    ui->messageBrowser->clear();
 }

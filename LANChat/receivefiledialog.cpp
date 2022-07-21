@@ -7,6 +7,11 @@ void receiveFileDialog::setFileName(const QString &value)
     fileName = value;
 }
 
+QString receiveFileDialog::getFilepath() const
+{
+    return filepath;
+}
+
 receiveFileDialog::receiveFileDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::receiveFileDialog)
@@ -32,7 +37,6 @@ void receiveFileDialog::SetFilePath(QString filePath)
 
     filePath=filePath+"/"+fileName;//完整的路径
     loadFile=new QFile(filePath);
-
 }
 
 void receiveFileDialog::SetAddress(QHostAddress address)
@@ -71,6 +75,16 @@ void receiveFileDialog::readMessage()
         {
             in>>fileName;
             bytesRecevivded+=fileNameSize;
+            int count=1;//重名文件个数
+            while(loadFile->exists())//文件重名
+            {
+                //如果文件名已存在
+                //文件名的最后加个数字
+                int index=loadFile->fileName().lastIndexOf('.');//.的下标
+                QString  fh=loadFile->fileName().insert(index-1,"副本"+QString::number(count));//在文件后缀的前面插个str
+                loadFile->setFileName(fh);
+                count++;
+            }
             if(!loadFile->open(QFile::WriteOnly))
             {
                 QMessageBox::warning(this,"recy错误","文件打开失败"+loadFile->errorString());

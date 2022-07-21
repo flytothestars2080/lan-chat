@@ -39,6 +39,8 @@ public:
     void StartConnect();//连接
     void setFileName(const QString &value);
 
+    QString getFilepath() const;
+
 protected:
     void closeEvent(QCloseEvent *event)Q_DECL_OVERRIDE;
 private slots:
