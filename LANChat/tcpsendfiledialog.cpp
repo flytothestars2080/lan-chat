@@ -71,7 +71,7 @@ void TcpSendFileDialog::SendMessage()
     clientSocket= tcpServer->nextPendingConnection();
     //连接更新进度条
     connect(clientSocket,SIGNAL(bytesWritten(qint64 )),
-            this,SLOT(updateSendProgess(qint64)));
+            this,SLOT(updataSendProgess(qint64)));
     ui->label->setText("开始发送:"+FileName);
     //获取文件名，文件大小
     LoadFile=new QFile(FilePath);
@@ -100,7 +100,7 @@ void TcpSendFileDialog::SendMessage()
     outArray.resize(0);
 }
 
-void TcpSendFileDialog::updateSendProgess(qint64 ByteNum)
+void TcpSendFileDialog::updataSendProgess(qint64 ByteNum)
 {
     QCoreApplication::processEvents();//防止用户界面冻结
 

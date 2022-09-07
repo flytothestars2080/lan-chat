@@ -4,9 +4,15 @@ INPUT(
 ./debug\qdialoglogin.o
 ./debug\tcpsendfiledialog.o
 ./debug\receivefiledialog.o
+./debug\mytcpserver.o
+./debug\filesender.o
+./debug\sendfiledialog.o
 ./debug\qrc_res.o
 ./debug\moc_ChatWidget.o
 ./debug\moc_qdialoglogin.o
 ./debug\moc_tcpsendfiledialog.o
 ./debug\moc_receivefiledialog.o
+./debug\moc_mytcpserver.o
+./debug\moc_filesender.o
+./debug\moc_sendfiledialog.o
 );

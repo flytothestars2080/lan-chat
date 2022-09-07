@@ -16,8 +16,9 @@ class TcpSendFileDialog : public QDialog
     Q_OBJECT
 
 private:
-    QTime time;//计时器
+    QTime time;//计时器//
     qint64 port;//端口号
+
     QTcpServer* tcpServer=nullptr;
     QString FilePath=""; //完整文件路径
     QString FileName;//文件名
@@ -28,7 +29,6 @@ qint64 TotalBytes=0;//要发送数据的总大小
 qint64 bytesWritten=0;//已经发送数据的大小
 qint64 bytesToWrite=0;//剩余数据的大小
 qint64 payloadSize=0;//每次发送数据的大小
-
 QByteArray outArray;//发送缓冲区
 
 public:
@@ -41,7 +41,7 @@ void  closeEvent(QCloseEvent*event)Q_DECL_OVERRIDE;
 void InitServer();
 private slots:
 void SendMessage();
-void updateSendProgess(qint64 ByteNum);
+void updataSendProgess(qint64 ByteNum);
 
 void on_btn_FileOpen_clicked();
 

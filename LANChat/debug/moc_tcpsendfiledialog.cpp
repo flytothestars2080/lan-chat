@@ -36,7 +36,7 @@ QT_MOC_LITERAL(1, 18, 12), // "sendFileName"
 QT_MOC_LITERAL(2, 31, 0), // ""
 QT_MOC_LITERAL(3, 32, 8), // "FileName"
 QT_MOC_LITERAL(4, 41, 11), // "SendMessage"
-QT_MOC_LITERAL(5, 53, 17), // "updateSendProgess"
+QT_MOC_LITERAL(5, 53, 17), // "updataSendProgess"
 QT_MOC_LITERAL(6, 71, 7), // "ByteNum"
 QT_MOC_LITERAL(7, 79, 23), // "on_btn_FileOpen_clicked"
 QT_MOC_LITERAL(8, 103, 19), // "on_btn_send_clicked"
@@ -45,7 +45,7 @@ QT_MOC_LITERAL(10, 144, 27) // "on_pushButton_canel_clicked"
 
     },
     "TcpSendFileDialog\0sendFileName\0\0"
-    "FileName\0SendMessage\0updateSendProgess\0"
+    "FileName\0SendMessage\0updataSendProgess\0"
     "ByteNum\0on_btn_FileOpen_clicked\0"
     "on_btn_send_clicked\0on_btn_close_clicked\0"
     "on_pushButton_canel_clicked"
@@ -98,7 +98,7 @@ void TcpSendFileDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         switch (_id) {
         case 0: _t->sendFileName((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 1: _t->SendMessage(); break;
-        case 2: _t->updateSendProgess((*reinterpret_cast< qint64(*)>(_a[1]))); break;
+        case 2: _t->updataSendProgess((*reinterpret_cast< qint64(*)>(_a[1]))); break;
         case 3: _t->on_btn_FileOpen_clicked(); break;
         case 4: _t->on_btn_send_clicked(); break;
         case 5: _t->on_btn_close_clicked(); break;

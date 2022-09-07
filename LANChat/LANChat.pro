@@ -29,20 +29,27 @@ SOURCES += \
     ChatWidget.cpp \
     qdialoglogin.cpp \
     tcpsendfiledialog.cpp \
-    receivefiledialog.cpp
+    receivefiledialog.cpp \
+    mytcpserver.cpp \
+    filesender.cpp \
+    sendfiledialog.cpp
 
 HEADERS += \
     ChatWidget.h \
     qdialoglogin.h \
     tcpsendfiledialog.h \
-    receivefiledialog.h
+    receivefiledialog.h \
+    mytcpserver.h \
+    filesender.h \
+    sendfiledialog.h
 
 
 FORMS += \
     ChatWidget.ui \
     qdialoglogin.ui \
     tcpsendfiledialog.ui \
-    receivefiledialog.ui
+    receivefiledialog.ui \
+    sendfiledialog.ui
 
 RESOURCES += \
     res.qrc

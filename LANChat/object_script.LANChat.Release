@@ -4,9 +4,15 @@ INPUT(
 ./release\qdialoglogin.o
 ./release\tcpsendfiledialog.o
 ./release\receivefiledialog.o
+./release\mytcpserver.o
+./release\filesender.o
+./release\sendfiledialog.o
 ./release\qrc_res.o
 ./release\moc_ChatWidget.o
 ./release\moc_qdialoglogin.o
 ./release\moc_tcpsendfiledialog.o
 ./release\moc_receivefiledialog.o
+./release\moc_mytcpserver.o
+./release\moc_filesender.o
+./release\moc_sendfiledialog.o
 );

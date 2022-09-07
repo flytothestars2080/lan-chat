@@ -11,6 +11,7 @@
 #include<QFileDialog>
 #include<QColorDialog>
 #include<QDate>
+#include<Qdebug>
 
 
 qint16 ChatWidget::getPort() const
@@ -110,7 +111,7 @@ void ChatWidget::hasPendingFile(QString username, QString sendIP, QString recyIP
 
         }else
         {
-            sendMessage(RefuseFile,sendIP);
+            sendMessage(RefuseFile,sendIP,recyIP);
         }
     }
 }
@@ -192,19 +193,21 @@ ChatWidget::ChatWidget(QWidget *parent,QString username) :
 
     }
 
-   TcpsendDlg=new TcpSendFileDialog(this);
-   connect(TcpsendDlg,SIGNAL(sendFileName(QString)),
-           this,SLOT(sendFileName_slot(QString)));
 
 
 
+  connect(&myTcpServer,SIGNAL(newFileSenderCreate(FIleSender*,QString)),
+          this,SLOT(newFileSenderCreate_slot(FIleSender*,QString)));
 
+
+qDebug()<<"main thread"<<"currentThreadId"<<QThread::currentThreadId();
 
 }
 
 ChatWidget::~ChatWidget()
 {
     delete ui;
+    myTcpServer.deleteLater();
 }
 
 QString ChatWidget::getLocalIp()
@@ -304,7 +307,7 @@ void ChatWidget::OneUserLeft(QString username, QString IP, qint64 id)
 
 }
 
-void ChatWidget::sendMessage(ChatWidget::MessageType messageType,QString IP)
+void ChatWidget::sendMessage(MessageType messageType,QString IP,QString FRecyIp)
 {
     QByteArray data;
 
@@ -337,11 +340,11 @@ void ChatWidget::sendMessage(ChatWidget::MessageType messageType,QString IP)
 
         break;
     case ChatWidget::RefuseFile:
-        out<<IP;
+        out<<IP<<FRecyIp;
         break;
 
     case ChatWidget::FileName:
-        out<<m_LocalIp<<m_recyIP<<m_SendFilename;
+        out<<m_LocalIp<<FRecyIp<<m_SendFilename;
         break;
 
 
@@ -406,7 +409,7 @@ void ChatWidget::SocketReadyRead_slot()
         QString currentime=QDateTime::currentDateTime().toString(
                     "yyyy年MM月dd日 hh:mm:ss");
 
-
+        QString r_ip;//文件接收者ip
 
         switch(messageType)
         {
@@ -434,20 +437,38 @@ void ChatWidget::SocketReadyRead_slot()
 
             break;
         case ChatWidget::RefuseFile:
-            in>>Ip;//文件发送IP
-            if(Ip==m_LocalIp)
+            in>>Ip>>r_ip;
+            if(Ip==m_LocalIp)//文件发送者IP
             {
-                TcpsendDlg->ClientRefuse();
-            }
+                 //确定是哪个文件发送窗口
+                if(!SendFileDlglist.isEmpty())
+                {
+                    for(int i=0;i<SendFileDlglist.count();i++)
+                    {
+                       if(r_ip==SendFileDlglist.at(i).sendlg->getRecyIP())
+                       {
+                           //调用客户端拒绝函数
+                          SendFileDlglist.at(i).sendlg->ClientRefuse();
+                          int dlgid=SendFileDlglist.at(i).dlgid;
+                          //关闭对应的线程
+                          myTcpServer.closeSendThread(dlgid);//关闭线程对应sender也会释放
 
+
+                       }
+                    }
+                }
+
+
+            }
             break;
 
         case ChatWidget::FileName:
+
             QString sendIp;
-            QString FilerecyIp;//接收者IP
+            QString recyIp;//接收者IP
             QString recyFileName;//需要接收文件的名字
-            in>>sendIp>>FilerecyIp>>recyFileName;
-            hasPendingFile(Username,sendIp,FilerecyIp,recyFileName);
+            in>>sendIp>>recyIp>>recyFileName;
+            hasPendingFile(Username,sendIp,recyIp,recyFileName);
             break;
 
         }
@@ -478,8 +499,14 @@ void ChatWidget::sendFileName_slot(QString filename)
 {
     //收到了发送窗口发来的文件名
 
-   m_SendFilename=filename;
-    sendMessage(FileName);//广播FileName;
+
+    SendFileDialog*dlg=qobject_cast<SendFileDialog*>(sender());
+    if(dlg==nullptr)
+    {
+        return ;
+    }
+    m_SendFilename=filename;
+    sendMessage(FileName,m_LocalIp,dlg->getRecyIP());//广播FileName;
 
 }
 
@@ -495,9 +522,26 @@ void ChatWidget::on_sendFileToolBtn_clicked()
     }else
     {
         int row=ui->userTableWidget->currentRow();
-        m_recyIP =ui->userTableWidget->item(row,3)->text();//获取接收端的IP地址
-        TcpsendDlg->InitServer();
-        TcpsendDlg->show();
+        QString recyIP =ui->userTableWidget->item(row,3)->text();//获取接收端的IP地址
+
+        if(!myTcpServer.isListening())
+        {
+            myTcpServer.listen(QHostAddress::Any,6666);
+        }
+
+       SendFileDialog *dlg= new  SendFileDialog(this);
+       dlg->setDlgid(sendfileDlgCount++);
+       dlg->setRecyIP(recyIP);
+       dlg->show();
+       DlgPair dlgpair;
+       dlgpair.sendlg=dlg;
+       dlgpair.dlgid= dlg->getDlgid();
+       SendFileDlglist.append(dlgpair);
+       connect(dlg,SIGNAL(sendFileName(QString)),this,SLOT(sendFileName_slot(QString)));
+       connect(dlg,SIGNAL(DlgSendCanel(int)),this,SLOT(SendDldCanel_slot(int)));
+       connect(dlg,SIGNAL(DlgClose(int)),this,SLOT(SendDlgClose_slot(int)));
+
+
     }
 }
 
@@ -571,4 +615,68 @@ void ChatWidget::on_messageTextEdit_currentCharFormatChanged(const QTextCharForm
 void ChatWidget::on_clearToolBtn_clicked()
 {
     ui->messageBrowser->clear();
+}
+
+void ChatWidget::newFileSenderCreate_slot(FIleSender *onefileSender,QString RecyIp)
+{
+
+    //接收者的IP
+
+    SendFileDialog*dlg;
+    //确定发送者(sender)服务的对话框
+    if(!SendFileDlglist.isEmpty())
+    {
+        for(int i=0;i<SendFileDlglist.count();i++)
+        {
+           if(RecyIp==SendFileDlglist.at(i).sendlg->getRecyIP())
+           {
+
+               dlg=SendFileDlglist.at(i).sendlg;
+               break;
+           }
+        }
+    }else
+    {
+        qDebug()<<"没有窗口"<<endl;
+        return ;
+    }
+
+    //发信号让线程初始化 并且开始工作
+    myTcpServer.MakeSenderWork(onefileSender,
+                                dlg->getFileName(),
+                                dlg->getFilePath(),
+                                dlg->getPayloadSize(),dlg->getDlgid());
+
+
+
+    //连接完成以后绑定sender的信号和槽
+  connect(onefileSender,SIGNAL(DataBytesChange(qint64,qint64,qint64,qint64,double,double)),
+                              dlg,SLOT(updateDateBytes(qint64,qint64,qint64,qint64,double,double)));
+
+
+
+
+}
+
+void ChatWidget::SendDldCanel_slot(int dlgid)
+{
+    //发送窗口取消
+    myTcpServer.closeSendThread(dlgid);
+
+}
+
+void ChatWidget::SendDlgClose_slot(int dlgid)
+{
+    for(int i=0;i<SendFileDlglist.count();i++)
+    {
+        if(SendFileDlglist.at(i).dlgid==dlgid)
+        {
+            SendFileDlglist.at(i).sendlg->deleteLater();
+            SendFileDlglist.removeAt(i);//从list里删除
+            break;
+        }
+
+    }
+
+
 }

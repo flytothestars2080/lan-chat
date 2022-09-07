@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ChatWidget_t {
-    QByteArrayData data[24];
-    char stringdata0[466];
+    QByteArrayData data[31];
+    char stringdata0[566];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -54,7 +54,14 @@ QT_MOC_LITERAL(19, 351, 23), // "on_colorToolBtn_clicked"
 QT_MOC_LITERAL(20, 375, 43), // "on_messageTextEdit_currentCha..."
 QT_MOC_LITERAL(21, 419, 15), // "QTextCharFormat"
 QT_MOC_LITERAL(22, 435, 6), // "format"
-QT_MOC_LITERAL(23, 442, 23) // "on_clearToolBtn_clicked"
+QT_MOC_LITERAL(23, 442, 23), // "on_clearToolBtn_clicked"
+QT_MOC_LITERAL(24, 466, 24), // "newFileSenderCreate_slot"
+QT_MOC_LITERAL(25, 491, 11), // "FIleSender*"
+QT_MOC_LITERAL(26, 503, 13), // "onefileSender"
+QT_MOC_LITERAL(27, 517, 6), // "RecyIP"
+QT_MOC_LITERAL(28, 524, 17), // "SendDldCanel_slot"
+QT_MOC_LITERAL(29, 542, 5), // "dlgid"
+QT_MOC_LITERAL(30, 548, 17) // "SendDlgClose_slot"
 
     },
     "ChatWidget\0Socketerror_slot\0\0"
@@ -69,7 +76,10 @@ QT_MOC_LITERAL(23, 442, 23) // "on_clearToolBtn_clicked"
     "on_underlineToolBtn_clicked\0"
     "on_colorToolBtn_clicked\0"
     "on_messageTextEdit_currentCharFormatChanged\0"
-    "QTextCharFormat\0format\0on_clearToolBtn_clicked"
+    "QTextCharFormat\0format\0on_clearToolBtn_clicked\0"
+    "newFileSenderCreate_slot\0FIleSender*\0"
+    "onefileSender\0RecyIP\0SendDldCanel_slot\0"
+    "dlgid\0SendDlgClose_slot"
 };
 #undef QT_MOC_LITERAL
 
@@ -79,7 +89,7 @@ static const uint qt_meta_data_ChatWidget[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      14,   14, // methods
+      17,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -87,20 +97,23 @@ static const uint qt_meta_data_ChatWidget[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   84,    2, 0x08 /* Private */,
-       5,    0,   87,    2, 0x08 /* Private */,
-       6,    0,   88,    2, 0x08 /* Private */,
-       7,    0,   89,    2, 0x08 /* Private */,
-       8,    1,   90,    2, 0x08 /* Private */,
-      10,    0,   93,    2, 0x08 /* Private */,
-      11,    1,   94,    2, 0x08 /* Private */,
-      13,    1,   97,    2, 0x08 /* Private */,
-      15,    1,  100,    2, 0x08 /* Private */,
-      17,    1,  103,    2, 0x08 /* Private */,
-      18,    1,  106,    2, 0x08 /* Private */,
-      19,    0,  109,    2, 0x08 /* Private */,
-      20,    1,  110,    2, 0x08 /* Private */,
-      23,    0,  113,    2, 0x08 /* Private */,
+       1,    1,   99,    2, 0x08 /* Private */,
+       5,    0,  102,    2, 0x08 /* Private */,
+       6,    0,  103,    2, 0x08 /* Private */,
+       7,    0,  104,    2, 0x08 /* Private */,
+       8,    1,  105,    2, 0x08 /* Private */,
+      10,    0,  108,    2, 0x08 /* Private */,
+      11,    1,  109,    2, 0x08 /* Private */,
+      13,    1,  112,    2, 0x08 /* Private */,
+      15,    1,  115,    2, 0x08 /* Private */,
+      17,    1,  118,    2, 0x08 /* Private */,
+      18,    1,  121,    2, 0x08 /* Private */,
+      19,    0,  124,    2, 0x08 /* Private */,
+      20,    1,  125,    2, 0x08 /* Private */,
+      23,    0,  128,    2, 0x08 /* Private */,
+      24,    2,  129,    2, 0x08 /* Private */,
+      28,    1,  134,    2, 0x08 /* Private */,
+      30,    1,  137,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
@@ -117,6 +130,9 @@ static const uint qt_meta_data_ChatWidget[] = {
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 21,   22,
     QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 25, QMetaType::QString,   26,   27,
+    QMetaType::Void, QMetaType::Int,   29,
+    QMetaType::Void, QMetaType::Int,   29,
 
        0        // eod
 };
@@ -141,6 +157,9 @@ void ChatWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 11: _t->on_colorToolBtn_clicked(); break;
         case 12: _t->on_messageTextEdit_currentCharFormatChanged((*reinterpret_cast< const QTextCharFormat(*)>(_a[1]))); break;
         case 13: _t->on_clearToolBtn_clicked(); break;
+        case 14: _t->newFileSenderCreate_slot((*reinterpret_cast< FIleSender*(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 15: _t->SendDldCanel_slot((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 16: _t->SendDlgClose_slot((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -151,6 +170,13 @@ void ChatWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 0:
                 *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QAbstractSocket::SocketError >(); break;
+            }
+            break;
+        case 14:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 0:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< FIleSender* >(); break;
             }
             break;
         }
@@ -182,13 +208,13 @@ int ChatWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 14)
+        if (_id < 17)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 14;
+        _id -= 17;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 14)
+        if (_id < 17)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 14;
+        _id -= 17;
     }
     return _id;
 }

@@ -5,8 +5,10 @@
 #include<QUdpSocket>
 #include<QString>
 #include<QHash>
-#include"tcpsendfiledialog.h"
 #include<QTextCharFormat>
+#include"mytcpserver.h"
+#include"sendfiledialog.h"
+#include<QList>
 
 namespace Ui {
 class Widget;
@@ -19,16 +21,24 @@ public:
     bool eventFilter(QObject *watched, QEvent *event)Q_DECL_OVERRIDE;//处理messageBrowser的键盘事件
 
 private:
+    struct DlgPair
+    {
+        SendFileDialog*sendlg;
+        int dlgid;
+    };
+    int sendfileDlgCount=0;//发送窗口数量
+    QList<DlgPair>SendFileDlglist ;
+    MyTcpServer myTcpServer;
     QString m_LocalIp;
     QString m_Localhostname;
     QString m_LocalUsername;
     qint64 m_LocalId=-1;
     int m_userCount=0;
-    QString m_recyIP;
+
+
     QUdpSocket*udpsocket=NULL;
     qint16 m_port=12345;//端口号
     QString m_SendFilename;//要发送的文件名字
-    TcpSendFileDialog*TcpsendDlg;//发送窗口
 
 public:
     explicit ChatWidget(QWidget *parent = 0,QString username="默认用户");
@@ -61,7 +71,7 @@ protected:
 
     void NewUserCome(QString username,QString LocalHostName,QString IP,qint64 id=-1);//新用户到来
     void OneUserLeft(QString username,QString IP, qint64 id=-1);//用户离去
-    void sendMessage(MessageType messageType,QString IP="");
+    void sendMessage(MessageType messageType,QString IP="",QString FRecyIp="");
 
     QString getLocalIp();
     QString GetMessage();
@@ -93,6 +103,10 @@ private slots:
     void on_messageTextEdit_currentCharFormatChanged(const QTextCharFormat &format);
 
     void on_clearToolBtn_clicked();
+
+    void newFileSenderCreate_slot(FIleSender*onefileSender,QString RecyIP);//接收端连接成功
+    void SendDldCanel_slot(int dlgid);//发送取消
+    void SendDlgClose_slot(int dlgid);//发送窗口关闭
 
 private:
 
