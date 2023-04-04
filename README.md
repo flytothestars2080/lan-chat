@@ -18,18 +18,17 @@ qt 写的局域网聊天程序
 1.  登录界面
 
 
-
+![登陆界面](https://github.com/flytothestars2080/lan-chat/blob/master/P1.PNG)
 
 密码123456，用户名随意
 
 2.  运行界面
 
-
-
+![运行界面](https://github.com/flytothestars2080/lan-chat/blob/master/P2.PNG)
 
 
 3.文件传输
-
+![文件转输](https://github.com/flytothestars2080/lan-chat/blob/master/P3.PNG)
 
 不过这个文件传输在release下会失效
 我还没找到原因
